@@ -3,8 +3,32 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@/*": [
-        "./*"
+      "@app/*": [
+        "./src/app/*"
+      ],
+      "@assets/*": [
+        "./src/assets/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@database/*": [
+        "./src/database/*"
+      ],
+      "@drizzle/*": [
+        "./src/drizzle/*"
+      ],
+      "@hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@schema/*": [
+        "./src/schema/*"
+      ],
+      "@state/*": [
+        "./src/state/*"
+      ],
+      "@ui/*": [
+        "./src/ui/*"
       ]
     }
   },
