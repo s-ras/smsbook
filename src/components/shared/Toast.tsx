@@ -18,7 +18,10 @@ const Toast: React.FC<IProps> = ({ text, icon, id }) => {
 
 	return (
 		<Snackbar
-			style={styles.snackbar}
+			style={{
+				...styles.snackbar,
+				backgroundColor: theme.colors.surface,
+			}}
 			visible={show}
 			onDismiss={() => {
 				setShow(false);

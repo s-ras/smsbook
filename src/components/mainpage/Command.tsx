@@ -1,9 +1,10 @@
 import useCollections from "@hooks/useCollections";
 import useCommandData from "@hooks/useCommandData";
+import useJournal from "@hooks/useJournal";
 import { SelectCommands } from "@schema/commands";
 import useToastStore from "@state/toastStore";
 import { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, PermissionsAndroid } from "react-native";
 import {
 	ActivityIndicator,
 	Button,
@@ -28,6 +29,7 @@ const Command: React.FC<IProps> = ({ cmd }) => {
 
 	const data = useCommandData.getString(cmd.id);
 	const collection = useCollections.select(cmd.collection_id);
+	const record = useJournal.insert(cmd.id);
 
 	const color = () => {
 		if (mode === "idle") {
@@ -60,9 +62,28 @@ const Command: React.FC<IProps> = ({ cmd }) => {
 	};
 
 	const handleSend = async () => {
+		const hasSendPerm = await PermissionsAndroid.check(
+			"android.permission.SEND_SMS"
+		);
+
+		if (!hasSendPerm) {
+			add("دسترسی ارسال پیام به اپلیکیشن داده نشده است", "alert");
+			await PermissionsAndroid.request("android.permission.SEND_SMS");
+			return;
+		}
+
 		setMode("pending");
-		console.log(`to ${collection.number} sending ${data}`);
-		await SendDirectSms(collection.number, data);
+
+		try {
+			if (!__DEV__) {
+				await SendDirectSms(collection.number, data);
+			}
+			console.log(`to ${collection.number} sending ${data}`);
+			record();
+		} catch {
+			add("خطا در ارسال پیام");
+		}
+
 		setMode("idle");
 	};
 

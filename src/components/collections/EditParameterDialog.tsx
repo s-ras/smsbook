@@ -44,14 +44,14 @@ const EditParameterDialog: React.FC<IProps> = ({ paramId, isOpen, close }) => {
 		});
 		add("پارامتر ویرایش شد");
 		close();
-		setLabel("");
-		setValue("");
+		setLabel(current.label);
+		setValue(current.value);
 	};
 
 	const handleCancel = () => {
 		close();
-		setLabel("");
-		setValue("");
+		setLabel(current.label);
+		setValue(current.value);
 	};
 
 	const theme = useTheme();

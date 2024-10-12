@@ -4,6 +4,7 @@ import Collapsible from "@components/Collapsible";
 import { Text } from "react-native-paper";
 import useCollections from "@hooks/useCollections";
 import CommandsGrid from "./CommandsGrid";
+import { View } from "react-native";
 
 interface IProps {
 	c: SelectCollection;
@@ -13,7 +14,7 @@ const Collection: React.FC<IProps> = ({ c }) => {
 	const expand = useCollections.expand(c.id);
 
 	return (
-		<>
+		<View style={{ flex: 1, marginBottom: 20 }}>
 			<Collapsible
 				summary={
 					<CollectionHeader
@@ -26,7 +27,7 @@ const Collection: React.FC<IProps> = ({ c }) => {
 			>
 				<CommandsGrid cid={c.id} />
 			</Collapsible>
-		</>
+		</View>
 	);
 };
 

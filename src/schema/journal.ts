@@ -1,16 +1,11 @@
-import {
-	sqliteTable,
-	text,
-	integer,
-	primaryKey,
-} from "drizzle-orm/sqlite-core";
+import { sqliteTable, integer, primaryKey } from "drizzle-orm/sqlite-core";
 
 import { commands } from "./commands";
 
 export const journal = sqliteTable(
 	"journal",
 	{
-		command_id: integer("command_id")
+		command_id: integer("state_id")
 			.notNull()
 			.references(() => commands.id),
 		timestamp: integer("timestamp", { mode: "timestamp" }).notNull(),

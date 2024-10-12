@@ -1,6 +1,13 @@
 import { Platform } from "react-native";
 
 export const fontConfig = {
+	default: {
+		fontFamily: Platform.select({
+			web: "Vazirmatn_500Medium",
+			ios: "Vazirmatn_500Medium",
+			default: "Vazirmatn_500Medium",
+		}),
+	},
 	displaySmall: {
 		fontFamily: Platform.select({
 			web: "Vazirmatn_100Thin",

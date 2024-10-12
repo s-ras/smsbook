@@ -5,7 +5,7 @@ import { parameters } from "./parameters";
 
 export const command_data = sqliteTable("command_data", {
 	id: integer("id").notNull().primaryKey({ autoIncrement: true }),
-	command_id: integer("command_id")
+	command_id: integer("state_id")
 		.notNull()
 		.references(() => commands.id),
 	param_id: integer("param_id").references(() => parameters.id),

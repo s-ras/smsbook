@@ -40,12 +40,12 @@ const EditCommandDialog: React.FC<IProps> = ({ isOpen, close }) => {
 		edit(name);
 		add("دستور ویرایش شد");
 		close();
-		setName("");
+		setName(current.name);
 	};
 
 	const handleCancel = () => {
 		close();
-		setName("");
+		setName(current.name);
 	};
 
 	const theme = useTheme();

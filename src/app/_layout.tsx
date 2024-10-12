@@ -1,4 +1,8 @@
+import { View } from "react-native";
+
 import { Stack } from "expo-router";
+
+import * as NavigationBar from "expo-navigation-bar";
 
 import { PaperProvider } from "react-native-paper";
 
@@ -15,6 +19,8 @@ const RootLayout = () => {
 
 	const theme = useColorSchemeTheme();
 
+	NavigationBar.setBackgroundColorAsync(theme.colors.background);
+
 	if (!isReady) {
 		return <ErrorPage />;
 	}
@@ -26,21 +32,28 @@ const RootLayout = () => {
 	return (
 		<PaperProvider theme={theme}>
 			<ThemeProvider value={theme}>
-				<Stack>
-					<Stack.Screen
-						name="(tabs)"
-						options={{ headerShown: false }}
-					/>
-					<Stack.Screen
-						name="collection"
-						options={{ headerShown: false }}
-					/>
-					<Stack.Screen
-						name="command"
-						options={{ headerShown: false }}
-					/>
-				</Stack>
-				<ToastStack />
+				<View
+					style={{
+						flex: 1,
+						backgroundColor: theme.colors.background,
+					}}
+				>
+					<Stack>
+						<Stack.Screen
+							name="(tabs)"
+							options={{ headerShown: false }}
+						/>
+						<Stack.Screen
+							name="collection"
+							options={{ headerShown: false }}
+						/>
+						<Stack.Screen
+							name="command"
+							options={{ headerShown: false }}
+						/>
+					</Stack>
+					<ToastStack />
+				</View>
 			</ThemeProvider>
 		</PaperProvider>
 	);

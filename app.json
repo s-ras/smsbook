@@ -18,10 +18,11 @@
 		"android": {
 			"adaptiveIcon": {
 				"foregroundImage": "./src/assets/images/adaptive-icon.png",
-				"backgroundColor": "#ffffff"
+				"backgroundColor": "#0d1117"
 			},
 			"permissions": [
-				"SEND_SMS"
+				"SEND_SMS",
+				"READ_SMS"
 			],
 			"package": "com.sras.smsbook"
 		},

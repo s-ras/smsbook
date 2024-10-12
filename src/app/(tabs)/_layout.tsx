@@ -3,10 +3,19 @@ import { Tabs } from "expo-router";
 import { Appbar, Icon } from "react-native-paper";
 
 import MaterialBottomTabs from "@components/navigation/MaterialBottomTabs";
+import { StatusBar } from "react-native";
+import useColorScheme from "@hooks/useColorScheme";
 
 const TabLayout = () => {
+	const colorScheme = useColorScheme();
+
 	return (
 		<>
+			<StatusBar
+				barStyle={
+					colorScheme === "DARK" ? "light-content" : "dark-content"
+				}
+			/>
 			<Appbar.Header>
 				<Appbar.Content
 					title="ارسال پیامک"

@@ -1,8 +1,9 @@
-import { StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 
 import useCollections from "@hooks/useCollections";
 
 import { Icon, Text } from "react-native-paper";
+
 import Collection from "@components/mainpage/Collection";
 
 const Index = () => {
@@ -11,14 +12,12 @@ const Index = () => {
 	return (
 		<View style={styles.main}>
 			{collections.length > 0 ? (
-				<View style={styles.content}>
-					{collections.map(c => (
-						<Collection
-							c={c}
-							key={c.id}
-						/>
-					))}
-				</View>
+				<FlatList
+					style={styles.content}
+					data={collections}
+					renderItem={({ item }) => <Collection c={item} />}
+					keyExtractor={c => c.id.toString()}
+				/>
 			) : (
 				<View style={styles.noContent}>
 					<Icon
@@ -41,8 +40,6 @@ const styles = StyleSheet.create({
 	content: {
 		flex: 1,
 		padding: 0,
-		display: "flex",
-		gap: 20,
 	},
 	noContent: {
 		flex: 1,

@@ -63,7 +63,7 @@ const NewParameterDialog: React.FC<IProps> = ({ isOpen, close }) => {
 							mode="outlined"
 							value={name}
 							label="نام"
-							onChangeText={text => setName(text)}
+							onChangeText={text => setName(text.trim())}
 							left={
 								<TextInput.Icon icon="application-variable-outline" />
 							}

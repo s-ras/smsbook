@@ -4,7 +4,7 @@ import { collections } from "./collections";
 
 export const commands = sqliteTable("commands", {
 	id: integer("id").notNull().primaryKey({ autoIncrement: true }),
-	name: text("name").notNull().unique(),
+	name: text("name").notNull(),
 	collection_id: integer("collection_id")
 		.notNull()
 		.references(() => collections.id),
