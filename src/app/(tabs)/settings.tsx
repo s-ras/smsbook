@@ -1,12 +1,17 @@
-import { View } from "react-native";
-
 import SettingsThemeEntry from "@components/settings/SettingsThemeEntry";
+import ScrollView from "@components/ScrollView";
+import SettingsExportEntry from "@components/settings/SettingsExportEntry";
+import SettingsImportEntry from "@components/settings/SettingsImportEntry";
+import SettingsResetEntry from "@components/settings/SettingsResetEntry";
 
 const Settings = () => {
 	return (
-		<View>
+		<ScrollView>
 			<SettingsThemeEntry />
-		</View>
+			<SettingsExportEntry />
+			<SettingsImportEntry />
+			<SettingsResetEntry />
+		</ScrollView>
 	);
 };
 

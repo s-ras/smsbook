@@ -10,6 +10,7 @@ import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import useStore from "@state/store";
 
 import { db } from "@database/client";
+
 import migrations from "@drizzle/migrations";
 
 import {

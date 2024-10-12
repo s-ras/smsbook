@@ -3,7 +3,7 @@ import { sqliteTable, integer, primaryKey } from "drizzle-orm/sqlite-core";
 import { states } from "./states";
 
 export const state_records = sqliteTable(
-	"journal",
+	"state_records",
 	{
 		state_id: integer("state_id")
 			.notNull()

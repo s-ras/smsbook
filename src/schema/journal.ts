@@ -5,7 +5,7 @@ import { commands } from "./commands";
 export const journal = sqliteTable(
 	"journal",
 	{
-		command_id: integer("state_id")
+		command_id: integer("command_id")
 			.notNull()
 			.references(() => commands.id),
 		timestamp: integer("timestamp", { mode: "timestamp" }).notNull(),

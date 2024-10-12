@@ -39,7 +39,7 @@ const useStore = create<IState & IAction>()(
 			version: 0,
 			migrate: (persistedState, version) => {
 				if (version >= 1) {
-					console.log("Incompatible veersion ! needs a reinstall");
+					console.log("Incompatible version ! needs a reinstall");
 					throw Error("INCOMPATIBLE STORE VERSION");
 				} else {
 					return persistedState;
