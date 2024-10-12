@@ -5,36 +5,44 @@ import { Appbar, Icon } from "react-native-paper";
 import MaterialTopTabs from "@components/navigation/MaterialTopTabs";
 
 import useActiveStore from "@state/activeStore";
-import useCollection from "@hooks/useCollections";
+import useCollections from "@hooks/useCollections";
+import DeleteCollectionAction from "@components/collections/DeleteCollectionAction";
+import EditCollectionAction from "@components/collections/EditCollectionAction";
+import { useEffect } from "react";
 
 const CollectionLayout: React.FC = () => {
 	const router = useRouter();
 
-	const acid = useActiveStore(state => state.activeCollectionId!);
+	const [acid, reset] = useActiveStore(state => [
+		state.activeCollectionId!,
+		state.reset,
+	]);
 
-	const collection = useCollection.select(acid);
+	const collection = useCollections.select(acid);
 
 	if (!acid) {
 		return <Redirect href="/(tabs)/library" />;
 	}
+
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	useEffect(() => {
+		return () => {
+			reset();
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<>
 			<Appbar.Header elevated>
 				<Appbar.BackAction
 					onPress={() => {
-						router.back();
+						router.navigate("/(tabs)/library");
 					}}
 				/>
 				<Appbar.Content title={collection?.name} />
-				<Appbar.Action
-					icon="square-edit-outline"
-					onPress={() => {}}
-				/>
-				<Appbar.Action
-					icon="trash-can-outline"
-					onPress={() => {}}
-				/>
+				<EditCollectionAction />
+				<DeleteCollectionAction />
 			</Appbar.Header>
 			<MaterialTopTabs
 				screenOptions={{

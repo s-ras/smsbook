@@ -7,21 +7,24 @@ import { command_data, InsertCommandData } from "@schema/command_data";
 import { parameters } from "@schema/parameters";
 
 const useGetCommandData = (id: number) => {
-	return useLiveQuery(
+	const c = useLiveQuery(
 		db
 			.select()
 			.from(command_data)
+			.leftJoin(parameters, eq(command_data.param_id, parameters.id))
 			.where(eq(command_data.command_id, id))
 			.orderBy(asc(command_data.order))
 	).data;
+
+	return c;
 };
 
 const useGetCommandString = (id: number) => {
 	const data = db
 		.select()
 		.from(command_data)
-		.where(eq(command_data.command_id, id))
 		.leftJoin(parameters, eq(command_data.param_id, parameters.id))
+		.where(eq(command_data.command_id, id))
 		.all();
 
 	let res = "";
@@ -37,39 +40,47 @@ const useGetCommandString = (id: number) => {
 	return res;
 };
 
+const useSelectCommandData = (id: number) => {
+	const cd = useLiveQuery(
+		db
+			.select()
+			.from(command_data)
+			.leftJoin(parameters, eq(command_data.param_id, parameters.id))
+			.where(eq(command_data.id, id))
+	).data[0];
+
+	return cd;
+};
+
 const useInsertCommandData = (id: number) => {
 	const ecd = useGetCommandData(id);
-	let order;
-	const last = ecd[ecd.length - 1].order + 1;
-	if (last) order = last;
-	else order = 1;
 	return ({ param_id, data }: { param_id?: number; data?: string }) => {
-		db.insert(command_data).values({
-			command_id: id,
-			param_id,
-			data,
-			order,
-		});
+		const order =
+			(ecd &&
+				ecd[ecd.length - 1] &&
+				ecd[ecd.length - 1].command_data.order + 1) ||
+			1;
+		db.insert(command_data)
+			.values({
+				command_id: id,
+				param_id: param_id ? param_id : undefined,
+				data: data ? data : undefined,
+				order,
+			})
+			.run();
 	};
 };
 
-const useUpdateCommandData = () => {
-	return ({
-		id,
-		data,
-		param_id,
-	}: {
-		id: number;
-		data?: string;
-		param_id?: number;
-	}) => {
+const useUpdateCommandData = (id: number) => {
+	return ({ data, param_id }: { data?: string; param_id?: number }) => {
 		const updates: Partial<InsertCommandData> = {};
 		if (data) updates.data = data;
 		if (param_id) updates.param_id = param_id;
 
 		db.update(command_data)
 			.set({ ...updates })
-			.where(eq(command_data.id, id));
+			.where(eq(command_data.id, id))
+			.run();
 	};
 };
 
@@ -120,14 +131,15 @@ const useDeleteCommandData = (cmd_id: number) => {
 	const ecd = useGetCommandData(cmd_id);
 	const reorder = useReorderCommandData();
 	return (id: number) => {
-		reorder(id, ecd.length);
-		db.delete(command_data).where(eq(command_data.id, id));
+		reorder(id, ecd.length + 1);
+		db.delete(command_data).where(eq(command_data.id, id)).run();
 	};
 };
 
 const useCommandData = {
 	get: useGetCommandData,
 	getString: useGetCommandString,
+	select: useSelectCommandData,
 	insert: useInsertCommandData,
 	update: useUpdateCommandData,
 	reorder: useReorderCommandData,

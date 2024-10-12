@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { StyleSheet, View } from "react-native";
+
 import {
 	Button,
 	Dialog,
@@ -9,43 +11,43 @@ import {
 	useTheme,
 } from "react-native-paper";
 
+import useToastStore from "@state/toastStore";
+
+import useCollections from "@hooks/useCollections";
+
 import ScrollView from "@components/ScrollView";
-import useCollection from "@hooks/useCollections";
 
 interface IProps {
 	isOpen: boolean;
 	close: () => void;
-	showSnack: () => void;
 }
 
-const NewCollectionDialog: React.FC<IProps> = ({
-	isOpen,
-	close,
-	showSnack,
-}) => {
-	const add = useCollection.insert();
+const NewCollectionDialog: React.FC<IProps> = ({ isOpen, close }) => {
+	const add = useToastStore(state => state.add);
+
+	const addCollection = useCollections.insert();
 
 	const [name, setName] = useState<string>("");
-	const [phone, setPhone] = useState<string>("");
+	const [number, setNumber] = useState<string>("");
 
 	const validate = () => {
 		const regex =
 			/((0?9)|(\+?989))((14)|(13)|(12)|(19)|(18)|(17)|(15)|(16)|(11)|(10)|(90)|(91)|(92)|(93)|(94)|(95)|(96)|(32)|(30)|(33)|(35)|(36)|(37)|(38)|(39)|(00)|(01)|(02)|(03)|(04)|(05)|(41)|(20)|(21)|(22)|(23)|(31)|(34)|(9910)|(9911)|(9913)|(9914)|(9999)|(999)|(990)|(9810)|(9811)|(9812)|(9813)|(9814)|(9815)|(9816)|(9817)|(998))\W?\d{3}\W?\d{4}/g;
-		return regex.test(phone);
+		return regex.test(number);
 	};
 
 	const handleConfirm = () => {
-		add({ name, number: phone });
-		showSnack();
+		addCollection({ name, number: number });
+		add("مجموعه جدید افزوده شد");
 		close();
 		setName("");
-		setPhone("");
+		setNumber("");
 	};
 
 	const handleCancel = () => {
 		close();
 		setName("");
-		setPhone("");
+		setNumber("");
 	};
 
 	const theme = useTheme();
@@ -56,9 +58,9 @@ const NewCollectionDialog: React.FC<IProps> = ({
 				visible={isOpen}
 				onDismiss={handleCancel}
 			>
-				<Dialog.Title>
-					<Text>افزودن مجموعه جدید</Text>
-				</Dialog.Title>
+				<View style={styles.title}>
+					<Text variant="titleMedium">افزودن مجموعه جدید</Text>
+				</View>
 				<Dialog.Content>
 					<ScrollView>
 						<TextInput
@@ -70,11 +72,11 @@ const NewCollectionDialog: React.FC<IProps> = ({
 						/>
 						<TextInput
 							mode="outlined"
-							value={phone}
+							value={number}
 							label="شماره تلفن"
-							onChangeText={text => setPhone(text.trim())}
+							onChangeText={text => setNumber(text.trim())}
 							left={<TextInput.Icon icon="phone" />}
-							error={!validate() && phone.trim().length >= 11}
+							error={!validate() && number.trim().length >= 11}
 							keyboardType="number-pad"
 						/>
 					</ScrollView>
@@ -92,4 +94,16 @@ const NewCollectionDialog: React.FC<IProps> = ({
 		</Portal>
 	);
 };
+
 export default NewCollectionDialog;
+
+const styles = StyleSheet.create({
+	title: {
+		alignItems: "center",
+		justifyContent: "flex-start",
+		display: "flex",
+		flexDirection: "row",
+		paddingHorizontal: 25,
+		paddingVertical: 10,
+	},
+});

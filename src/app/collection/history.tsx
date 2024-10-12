@@ -5,7 +5,8 @@ import useJournal from "@hooks/useJournal";
 import useActiveStore from "@state/activeStore";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { Icon, List, Text } from "react-native-paper";
-import ClearHistoryFAB from "@components/collection/ClearHistoryFab";
+import ClearHistoryFAB from "@components/collections/ClearHistoryFab";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const History: React.FC = () => {
 	const acid = useActiveStore(state => state.activeCollectionId!);
@@ -18,18 +19,18 @@ const History: React.FC = () => {
 
 	return (
 		<>
-			<View>
-				<Animated.ScrollView
-					ref={scrollRef}
-					scrollEventThrottle={16}
-					contentContainerStyle={{ flexGrow: 1 }}
-					onScroll={e => {
-						const currentScrollPosition =
-							Math.floor(e.nativeEvent.contentOffset.y) ?? 0;
-						setIsFABExpanded(currentScrollPosition <= 0);
-					}}
-				>
-					{journal.length > 0 ? (
+			<SafeAreaView style={styles.main}>
+				{journal.length > 0 ? (
+					<Animated.ScrollView
+						ref={scrollRef}
+						scrollEventThrottle={16}
+						contentContainerStyle={{ flexGrow: 1 }}
+						onScroll={e => {
+							const currentScrollPosition =
+								Math.floor(e.nativeEvent.contentOffset.y) ?? 0;
+							setIsFABExpanded(currentScrollPosition <= 0);
+						}}
+					>
 						<View style={styles.content}>
 							{journal.map(j => {
 								return (
@@ -50,17 +51,17 @@ const History: React.FC = () => {
 								);
 							})}
 						</View>
-					) : (
-						<View style={styles.noContent}>
-							<Icon
-								source="clock-alert-outline"
-								size={100}
-							/>
-							<Text variant="labelLarge">تاریخچه خالی است</Text>
-						</View>
-					)}
-				</Animated.ScrollView>
-			</View>
+					</Animated.ScrollView>
+				) : (
+					<View style={styles.noContent}>
+						<Icon
+							source="clock-alert-outline"
+							size={100}
+						/>
+						<Text variant="labelLarge">تاریخچه خالی است</Text>
+					</View>
+				)}
+			</SafeAreaView>
 			{journal.length > 0 && (
 				<ClearHistoryFAB isExtended={isFABExpanded} />
 			)}
@@ -71,10 +72,12 @@ const History: React.FC = () => {
 export default History;
 
 const styles = StyleSheet.create({
+	main: {
+		flex: 1,
+	},
 	content: {
 		flex: 1,
 		padding: 0,
-		overflow: "hidden",
 		display: "flex",
 		gap: 20,
 	},
@@ -85,7 +88,6 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 		gap: 10,
-		height: 500,
 	},
 	listItem: {
 		padding: 20,

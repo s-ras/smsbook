@@ -12,15 +12,20 @@ import Animated, {
 interface IProps {
 	summary: React.ReactNode;
 	children: React.ReactNode;
+	isExpanded: boolean;
+	expand: (e: boolean) => void;
 }
 
-const Collapsible: React.FC<IProps> = ({ summary, children }) => {
-	const [isOpen, setIsOpen] = useState<boolean>(false);
-
+const Collapsible: React.FC<IProps> = ({
+	summary,
+	children,
+	expand,
+	isExpanded,
+}) => {
 	const height = useSharedValue(0);
 
 	const derivedHeight = useDerivedValue(() =>
-		withTiming(height.value * Number(isOpen), {
+		withTiming((height.value + 30) * Number(isExpanded), {
 			duration: 200,
 		})
 	);
@@ -33,8 +38,7 @@ const Collapsible: React.FC<IProps> = ({ summary, children }) => {
 			<Pressable
 				style={styles.heading}
 				onPress={() => {
-					setIsOpen(isOpen ? false : true);
-					console.log(isOpen);
+					expand(!isExpanded);
 				}}
 			>
 				{summary}
@@ -58,6 +62,7 @@ export default Collapsible;
 const styles = StyleSheet.create({
 	heading: {
 		width: "100%",
+		zIndex: 2,
 	},
 	content: {
 		marginTop: 6,

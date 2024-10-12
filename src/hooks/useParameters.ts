@@ -1,10 +1,11 @@
-import { eq } from "drizzle-orm";
+import { count, countDistinct, eq } from "drizzle-orm";
 
 import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 
 import { db } from "@database/client";
 
 import { InsertParameters, parameters } from "@schema/parameters";
+import { command_data } from "@schema/command_data";
 
 const useGetParameters = (id: number) => {
 	return useLiveQuery(
@@ -13,9 +14,11 @@ const useGetParameters = (id: number) => {
 };
 
 const useSelectParameter = (id: number) => {
-	return useLiveQuery(
+	const p = useLiveQuery(
 		db.select().from(parameters).where(eq(parameters.id, id))
-	).data;
+	).data[0];
+
+	return p;
 };
 
 const useInsertParameters = (id: number) => {
@@ -24,16 +27,8 @@ const useInsertParameters = (id: number) => {
 	};
 };
 
-const useUpdateParameters = () => {
-	return ({
-		id,
-		label,
-		value,
-	}: {
-		id: number;
-		label?: string;
-		value?: string;
-	}) => {
+const useUpdateParameters = (id: number) => {
+	return ({ label, value }: { label?: string; value?: string }) => {
 		const updates: Partial<InsertParameters> = {};
 		if (label) updates.label = label;
 		if (value) updates.value = value;
@@ -51,12 +46,27 @@ const useDeleteParameters = () => {
 	};
 };
 
+const useParameterUsageCount = () => {
+	return (id: number) => {
+		const counts = db
+			.select({
+				count: countDistinct(command_data.command_id).as("count"),
+			})
+			.from(command_data)
+			.where(eq(command_data.param_id, id))
+			.get();
+
+		return counts?.count || 0;
+	};
+};
+
 const useParameters = {
 	get: useGetParameters,
 	select: useSelectParameter,
 	insert: useInsertParameters,
 	update: useUpdateParameters,
 	delete: useDeleteParameters,
+	count: useParameterUsageCount,
 };
 
 export default useParameters;

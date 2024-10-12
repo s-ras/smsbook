@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { StyleSheet, View } from "react-native";
+
 import {
 	Button,
 	Dialog,
@@ -11,34 +13,33 @@ import {
 
 import ScrollView from "@components/ScrollView";
 import useActiveStore from "@state/activeStore";
-import useParameters from "@hooks/useParameters";
+import useToastStore from "@state/toastStore";
+import useCommands from "@hooks/useCommands";
 
 interface IProps {
 	isOpen: boolean;
 	close: () => void;
-	showSnack: () => void;
 }
 
-const NewParameterDialog: React.FC<IProps> = ({ isOpen, close, showSnack }) => {
+const NewCommandDialog: React.FC<IProps> = ({ isOpen, close }) => {
 	const acid = useActiveStore(state => state.activeCollectionId!);
 
-	const add = useParameters.insert(acid);
+	const add = useToastStore(state => state.add);
+
+	const addCommand = useCommands.insert(acid);
 
 	const [name, setName] = useState<string>("");
-	const [value, setValue] = useState<string>("");
 
 	const handleConfirm = () => {
-		add(name, value);
-		showSnack();
+		addCommand(name);
+		add("دستور جدید افزوده شد");
 		close();
 		setName("");
-		setValue("");
 	};
 
 	const handleCancel = () => {
 		close();
 		setName("");
-		setValue("");
 	};
 
 	const theme = useTheme();
@@ -49,9 +50,9 @@ const NewParameterDialog: React.FC<IProps> = ({ isOpen, close, showSnack }) => {
 				visible={isOpen}
 				onDismiss={handleCancel}
 			>
-				<Dialog.Title>
-					<Text>افزودن پارامتر جدید</Text>
-				</Dialog.Title>
+				<View style={styles.title}>
+					<Text variant="titleMedium">افزودن دستور جدید</Text>
+				</View>
 				<Dialog.Content>
 					<ScrollView>
 						<TextInput
@@ -63,23 +64,13 @@ const NewParameterDialog: React.FC<IProps> = ({ isOpen, close, showSnack }) => {
 								<TextInput.Icon icon="application-variable-outline" />
 							}
 						/>
-						<TextInput
-							mode="outlined"
-							value={value}
-							label="مقدار"
-							onChangeText={text => setValue(text.trim())}
-							left={<TextInput.Icon icon="variable" />}
-						/>
 					</ScrollView>
 				</Dialog.Content>
 				<Dialog.Actions style={{ justifyContent: "space-between" }}>
 					<Button onPress={handleCancel}>بازگشت</Button>
 					<Button
 						onPress={handleConfirm}
-						disabled={
-							name.trim().length === 0 ||
-							value.trim().length === 0
-						}
+						disabled={name.trim().length === 0}
 					>
 						تایید
 					</Button>
@@ -89,4 +80,15 @@ const NewParameterDialog: React.FC<IProps> = ({ isOpen, close, showSnack }) => {
 	);
 };
 
-export default NewParameterDialog;
+export default NewCommandDialog;
+
+const styles = StyleSheet.create({
+	title: {
+		alignItems: "center",
+		justifyContent: "flex-start",
+		display: "flex",
+		flexDirection: "row",
+		paddingHorizontal: 25,
+		paddingVertical: 10,
+	},
+});

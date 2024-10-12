@@ -1,0 +1,9 @@
+services:
+  build:
+    image: build/expo:latest
+    network_mode: "host"
+    restart: on-failure
+    environment:
+      - EXPO_TOKEN=${EXPO_TOKEN}
+    volumes:
+      - ./:/project/app

@@ -15,7 +15,7 @@ const Library: React.FC = () => {
 	const setActive = useActiveStore(state => state.setActiveCollectionId);
 
 	return (
-		<LibraryContainer>
+		<LibraryContainer isEmpty={collections.length === 0}>
 			{collections.map(c => {
 				return (
 					<List.Item

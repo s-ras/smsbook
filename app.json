@@ -23,12 +23,7 @@
 			"permissions": [
 				"SEND_SMS"
 			],
-			"package": "com.sepehr.smsbook"
-		},
-		"web": {
-			"bundler": "metro",
-			"output": "static",
-			"favicon": "./src/assets/images/favicon.png"
+			"package": "com.sras.smsbook"
 		},
 		"plugins": [
 			"expo-router",

@@ -1,20 +1,46 @@
+import { useEffect } from "react";
 import { View, StyleSheet } from "react-native";
-import { SelectCollection } from "@schema/collections";
 import { useTheme, Text, TouchableRipple, Icon } from "react-native-paper";
+import Animated, {
+	useAnimatedStyle,
+	useSharedValue,
+	withTiming,
+} from "react-native-reanimated";
 
 interface IProps {
-	collection: SelectCollection;
+	name: string;
+	isExpanded: boolean;
 }
 
-const CollectionHeader: React.FC<IProps> = ({ collection }) => {
+const CollectionHeader: React.FC<IProps> = ({ name, isExpanded }) => {
 	const theme = useTheme();
+
+	const rotation = useSharedValue<number>(isExpanded ? 180 : 0);
+	const radius = useSharedValue<number>(isExpanded ? 30 : 0);
+
+	useEffect(() => {
+		rotation.value = withTiming(isExpanded ? 180 : 0, { duration: 200 });
+		radius.value = withTiming(isExpanded ? 0 : 22, {
+			duration: 200,
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isExpanded]);
+
+	const animatedStyle = useAnimatedStyle(() => ({
+		transform: [{ rotate: `${rotation.value}deg` }],
+	}));
+
+	const animatedRadius = useAnimatedStyle(() => ({
+		borderRadius: radius.value,
+	}));
 
 	return (
 		<View style={styles.headerOuterWrapper}>
-			<View
+			<Animated.View
 				style={[
 					styles.headerInnerWrapper,
 					{ backgroundColor: theme.colors.primaryContainer },
+					animatedRadius,
 				]}
 			>
 				<TouchableRipple
@@ -22,14 +48,16 @@ const CollectionHeader: React.FC<IProps> = ({ collection }) => {
 					borderless
 				>
 					<View style={styles.inner}>
-						<Text variant="titleMedium">{collection.name}</Text>
-						<Icon
-							source="chevron-down"
-							size={35}
-						/>
+						<Text variant="titleMedium">{name}</Text>
+						<Animated.View style={animatedStyle}>
+							<Icon
+								source={"chevron-down"}
+								size={35}
+							/>
+						</Animated.View>
 					</View>
 				</TouchableRipple>
-			</View>
+			</Animated.View>
 		</View>
 	);
 };
@@ -45,11 +73,13 @@ const styles = StyleSheet.create({
 	headerInnerWrapper: {
 		width: "85%",
 		height: 60,
-		borderRadius: 22,
+		borderTopLeftRadius: 22,
+		borderTopRightRadius: 22,
 	},
 	rippleWrapper: {
 		width: "100%",
-		borderRadius: 22,
+		borderTopLeftRadius: 22,
+		borderTopRightRadius: 22,
 	},
 	inner: {
 		display: "flex",

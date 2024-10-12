@@ -13,7 +13,10 @@ const useGetCommands = (id: number) => {
 };
 
 const useSelectCommand = (id: number) => {
-	return useLiveQuery(db.select().from(commands).where(eq(commands.id, id)));
+	const c = useLiveQuery(
+		db.select().from(commands).where(eq(commands.id, id))
+	).data[0];
+	return c;
 };
 
 const useInsertCommands = (id: number) => {
@@ -22,8 +25,8 @@ const useInsertCommands = (id: number) => {
 	};
 };
 
-const useUpdateCommands = () => {
-	return ({ id, name }: { id: number; name: string }) => {
+const useUpdateCommands = (id: number) => {
+	return (name: string) => {
 		db.update(commands).set({ name }).where(eq(commands.id, id)).run();
 	};
 };

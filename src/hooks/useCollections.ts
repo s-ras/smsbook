@@ -10,7 +10,9 @@ const useGetCollections = () => {
 };
 
 const useSelectCollection = (id: number) => {
-	const c = db.select().from(collections).where(eq(collections.id, id)).get();
+	const c = useLiveQuery(
+		db.select().from(collections).where(eq(collections.id, id))
+	).data[0];
 	return c;
 };
 
@@ -27,22 +29,23 @@ const useInsertCollections = () => {
 	};
 };
 
-const useUpdateCollections = () => {
-	return ({
-		id,
-		number,
-		name,
-	}: {
-		id: number;
-		number?: string;
-		name?: string;
-	}) => {
+const useUpdateCollections = (id: number) => {
+	return ({ number, name }: { number?: string; name?: string }) => {
 		const updates: Partial<InsertCollection> = {};
 		if (number) updates.number = number;
 		if (name) updates.name = name;
 
 		db.update(collections)
 			.set({ ...updates })
+			.where(eq(collections.id, id))
+			.run();
+	};
+};
+
+const useExpandCollection = (id: number) => {
+	return (isExpanded: boolean) => {
+		db.update(collections)
+			.set({ is_expanded: isExpanded })
 			.where(eq(collections.id, id))
 			.run();
 	};
@@ -95,18 +98,19 @@ const useDeleteCollections = () => {
 	const ec = useGetCollections();
 	const reorder = useReorderCollections();
 	return (id: number) => {
-		reorder(id, ec.length);
+		reorder(id, ec.length + 1);
 		db.delete(collections).where(eq(collections.id, id)).run();
 	};
 };
 
-const useCollection = {
+const useCollections = {
 	get: useGetCollections,
 	select: useSelectCollection,
 	insert: useInsertCollections,
 	update: useUpdateCollections,
+	expand: useExpandCollection,
 	reorder: useReorderCollections,
 	delete: useDeleteCollections,
 };
 
-export default useCollection;
+export default useCollections;

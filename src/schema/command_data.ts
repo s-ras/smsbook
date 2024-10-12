@@ -9,7 +9,7 @@ export const command_data = sqliteTable("command_data", {
 		.notNull()
 		.references(() => commands.id),
 	param_id: integer("param_id").references(() => parameters.id),
-	order: integer("order").notNull().unique(),
+	order: integer("order").notNull(),
 	data: text("data"),
 });
 

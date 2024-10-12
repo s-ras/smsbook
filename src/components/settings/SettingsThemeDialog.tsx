@@ -31,9 +31,9 @@ const SettingsThemeDialog: React.FC<IProps> = ({ isOpen, close }) => {
 				visible={isOpen}
 				onDismiss={close}
 			>
-				<Dialog.Title>
-					<Text>انتخاب پوسته</Text>
-				</Dialog.Title>
+				<View style={styles.title}>
+					<Text variant="titleMedium">انتخاب پوسته</Text>
+				</View>
 				<Dialog.Content>
 					<TouchableRipple
 						onPress={() => {
@@ -117,5 +117,13 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "center",
+	},
+	title: {
+		alignItems: "center",
+		justifyContent: "flex-start",
+		display: "flex",
+		flexDirection: "row",
+		paddingHorizontal: 25,
+		paddingVertical: 10,
 	},
 });

@@ -1,0 +1,1 @@
+ALTER TABLE `collections` ADD `is_expanded` integer DEFAULT true NOT NULL;

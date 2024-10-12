@@ -8,6 +8,7 @@ import useLoadAssets from "@hooks/useLoadAssets";
 import useColorSchemeTheme from "@hooks/useColorSchemeTheme";
 
 import ErrorPage from "@components/ErrorPage";
+import ToastStack from "@components/shared/ToastStack";
 
 const RootLayout = () => {
 	const { isReady, isError } = useLoadAssets();
@@ -34,7 +35,12 @@ const RootLayout = () => {
 						name="collection"
 						options={{ headerShown: false }}
 					/>
+					<Stack.Screen
+						name="command"
+						options={{ headerShown: false }}
+					/>
 				</Stack>
+				<ToastStack />
 			</ThemeProvider>
 		</PaperProvider>
 	);
