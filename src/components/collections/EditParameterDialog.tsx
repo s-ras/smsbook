@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { StyleSheet, View } from "react-native";
+
 import {
 	Button,
 	Dialog,
@@ -9,11 +11,11 @@ import {
 	useTheme,
 } from "react-native-paper";
 
-import ScrollView from "@components/ScrollView";
-import useParameters from "@hooks/useParameters";
 import useToastStore from "@state/toastStore";
-import DeleteParameterButton from "./DeleteParameterButton";
-import { StyleSheet, View } from "react-native";
+import useParameters from "@hooks/useParameters";
+
+import ScrollView from "@components/shared/ScrollView";
+import DeleteParameterButton from "@components/collections/DeleteParameterButton";
 
 interface IProps {
 	paramId: number;
@@ -79,6 +81,8 @@ const EditParameterDialog: React.FC<IProps> = ({ paramId, isOpen, close }) => {
 							mode="outlined"
 							value={label}
 							label="نام"
+							autoFocus
+							autoCapitalize="none"
 							onChangeText={text => setLabel(text)}
 							left={
 								<TextInput.Icon icon="application-variable-outline" />
@@ -88,7 +92,7 @@ const EditParameterDialog: React.FC<IProps> = ({ paramId, isOpen, close }) => {
 							mode="outlined"
 							value={value}
 							label="مقدار"
-							onChangeText={text => setValue(text.trim())}
+							onChangeText={text => setValue(text)}
 							left={<TextInput.Icon icon="variable" />}
 						/>
 					</ScrollView>

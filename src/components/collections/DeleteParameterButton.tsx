@@ -1,8 +1,11 @@
-import ConfirmationDialog from "@components/shared/ConfirmationDialog";
-import useParameters from "@hooks/useParameters";
-import useToastStore from "@state/toastStore";
 import { useState } from "react";
+
 import { IconButton } from "react-native-paper";
+
+import useToastStore from "@state/toastStore";
+import useParameters from "@hooks/useParameters";
+
+import ConfirmationDialog from "@components/shared/ConfirmationDialog";
 
 interface IProps {
 	paramId: number;

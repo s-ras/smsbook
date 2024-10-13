@@ -2,10 +2,11 @@ import { useState } from "react";
 
 import { View, StyleSheet } from "react-native";
 
+import { Icon, Text } from "react-native-paper";
+
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 
 import NewCollectionFABWithDialog from "@components/library/NewCollectionFABWithDialog";
-import { Icon, Text } from "react-native-paper";
 
 interface IProps {
 	children: React.ReactNode;

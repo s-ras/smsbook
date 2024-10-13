@@ -1,11 +1,14 @@
 import { useEffect } from "react";
+
 import { View, StyleSheet } from "react-native";
-import { useTheme, Text, TouchableRipple, Icon } from "react-native-paper";
+
 import Animated, {
 	useAnimatedStyle,
 	useSharedValue,
 	withTiming,
 } from "react-native-reanimated";
+
+import { useTheme, Text, TouchableRipple, Icon } from "react-native-paper";
 
 interface IProps {
 	name: string;

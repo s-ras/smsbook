@@ -1,10 +1,12 @@
-import { SelectCollection } from "@schema/collections";
-import CollectionHeader from "./CollectionHeader";
-import Collapsible from "@components/Collapsible";
-import { Text } from "react-native-paper";
-import useCollections from "@hooks/useCollections";
-import CommandsGrid from "./CommandsGrid";
 import { View } from "react-native";
+
+import useCollections from "@hooks/useCollections";
+
+import Collapsible from "@components/shared/Collapsible";
+import CollectionHeader from "@components/mainpage/CollectionHeader";
+import CommandsGrid from "@components/mainpage/CommandsGrid";
+
+import { SelectCollection } from "@schema/collections";
 
 interface IProps {
 	c: SelectCollection;

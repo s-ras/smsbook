@@ -4,11 +4,11 @@ import { useRouter } from "expo-router";
 
 import { Appbar } from "react-native-paper";
 
-import ConfirmationDialog from "@components/shared/ConfirmationDialog";
-
 import useActiveStore from "@state/activeStore";
 import useToastStore from "@state/toastStore";
 import useCollections from "@hooks/useCollections";
+
+import ConfirmationDialog from "@components/shared/ConfirmationDialog";
 
 const DeleteCollectionAction: React.FC = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);

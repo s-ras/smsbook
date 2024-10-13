@@ -1,13 +1,20 @@
-import { Tabs } from "expo-router";
+import { StatusBar } from "react-native";
 
-import { Appbar, Icon } from "react-native-paper";
+import { Tabs } from "expo-router";
+import { setBackgroundColorAsync as setNavigationBarColorAsync } from "expo-navigation-bar";
+
+import { Appbar, Icon, useTheme } from "react-native-paper";
+
+import useColorScheme from "@hooks/useColorScheme";
 
 import MaterialBottomTabs from "@components/navigation/MaterialBottomTabs";
-import { StatusBar } from "react-native";
-import useColorScheme from "@hooks/useColorScheme";
 
 const TabLayout = () => {
 	const colorScheme = useColorScheme();
+
+	const theme = useTheme();
+
+	setNavigationBarColorAsync(theme.colors.elevation.level2);
 
 	return (
 		<>
@@ -19,10 +26,10 @@ const TabLayout = () => {
 			<Appbar.Header>
 				<Appbar.Content
 					title="ارسال پیامک"
-					titleStyle={{ textAlign: "center" }}
+					titleStyle={{ textAlign: "center", fontSize: 20 }}
 				/>
 			</Appbar.Header>
-			<MaterialBottomTabs>
+			<MaterialBottomTabs theme={theme}>
 				<Tabs.Screen
 					name="index"
 					options={{

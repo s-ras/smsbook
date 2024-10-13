@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Appbar } from "react-native-paper";
 
-import EditCommandDialog from "./EditCommandDialog";
+import EditCommandDialog from "@components/commands/EditCommandDialog";
 
 const EditCommandAction: React.FC = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);

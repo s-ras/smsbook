@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Appbar } from "react-native-paper";
 
-import EditCollectionDialog from "./EditCollectionDialog";
+import EditCollectionDialog from "@components/collections/EditCollectionDialog";
 
 const EditCollectionAction: React.FC = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);

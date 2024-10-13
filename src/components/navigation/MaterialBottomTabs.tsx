@@ -1,13 +1,13 @@
+import type {
+	ParamListBase,
+	TabNavigationState,
+} from "@react-navigation/native";
+
 import {
 	createMaterialBottomTabNavigator,
 	MaterialBottomTabNavigationEventMap,
 	MaterialBottomTabNavigationOptions,
 } from "react-native-paper/react-navigation";
-
-import type {
-	ParamListBase,
-	TabNavigationState,
-} from "@react-navigation/native";
 
 import { withLayoutContext } from "expo-router";
 

@@ -1,20 +1,28 @@
-import useCollections from "@hooks/useCollections";
-import useCommandData from "@hooks/useCommandData";
-import useJournal from "@hooks/useJournal";
-import { SelectCommands } from "@schema/commands";
-import useToastStore from "@state/toastStore";
 import { useState } from "react";
+
 import { View, StyleSheet, PermissionsAndroid } from "react-native";
+
+import * as Haptics from "expo-haptics";
+
+import { SendDirectSms } from "react-native-send-direct-sms";
+
 import {
 	ActivityIndicator,
 	Button,
+	Chip,
 	Surface,
 	Text,
 	TouchableRipple,
 	useTheme,
 } from "react-native-paper";
 
-import { SendDirectSms } from "react-native-send-direct-sms";
+import useToastStore from "@state/toastStore";
+import useCollections from "@hooks/useCollections";
+import useCommandData from "@hooks/useCommandData";
+import useJournal from "@hooks/useJournal";
+
+import { SelectCommands } from "@schema/commands";
+import { humanReadableDate } from "../../utils/dates";
 
 interface IProps {
 	cmd: SelectCommands;
@@ -30,6 +38,7 @@ const Command: React.FC<IProps> = ({ cmd }) => {
 	const data = useCommandData.getString(cmd.id);
 	const collection = useCollections.select(cmd.collection_id);
 	const record = useJournal.insert(cmd.id);
+	const lastRecord = useJournal.last(cmd.id);
 
 	const color = () => {
 		if (mode === "idle") {
@@ -52,6 +61,7 @@ const Command: React.FC<IProps> = ({ cmd }) => {
 	};
 
 	const handlePress = () => {
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
 		if (data.length === 0) {
 			add("هیچ داده‌ای برای این دستور تعریف نشده است");
 			return;
@@ -61,15 +71,19 @@ const Command: React.FC<IProps> = ({ cmd }) => {
 		}
 	};
 
-	const handleSend = async () => {
-		const hasSendPerm = await PermissionsAndroid.check(
-			"android.permission.SEND_SMS"
-		);
+	const checkPerm = async () => {
+		return await PermissionsAndroid.check("android.permission.SEND_SMS");
+	};
 
-		if (!hasSendPerm) {
-			add("دسترسی ارسال پیام به اپلیکیشن داده نشده است", "alert");
+	const handleSend = async () => {
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+
+		if (!(await checkPerm())) {
 			await PermissionsAndroid.request("android.permission.SEND_SMS");
-			return;
+			if (!(await checkPerm())) {
+				add("دسترسی ارسال پیام به اپلیکیشن داده نشده است", "alert");
+				return;
+			}
 		}
 
 		setMode("pending");
@@ -79,6 +93,7 @@ const Command: React.FC<IProps> = ({ cmd }) => {
 				await SendDirectSms(collection.number, data);
 			}
 			console.log(`to ${collection.number} sending ${data}`);
+			add("پیام ارسال شد");
 			record();
 		} catch {
 			add("خطا در ارسال پیام");
@@ -99,13 +114,23 @@ const Command: React.FC<IProps> = ({ cmd }) => {
 			>
 				<View style={styles.innerContainer}>
 					{mode === "idle" && (
-						<Text
-							variant="titleMedium"
-							numberOfLines={1}
-							style={{ color: textColor() }}
-						>
-							{cmd.name}
-						</Text>
+						<View style={styles.previewMode}>
+							<Text
+								variant="titleMedium"
+								numberOfLines={1}
+								style={{ color: textColor() }}
+							>
+								{cmd.name}
+							</Text>
+							{lastRecord && (
+								<Chip
+									icon="history"
+									style={{ borderRadius: 50 }}
+								>
+									{humanReadableDate(lastRecord.timestamp)}
+								</Chip>
+							)}
+						</View>
 					)}
 					{mode === "confirm" && (
 						<View style={styles.confirm}>
@@ -119,7 +144,12 @@ const Command: React.FC<IProps> = ({ cmd }) => {
 							<Button
 								mode="contained"
 								style={{ width: "100%" }}
-								onPress={() => setMode("idle")}
+								onPress={() => {
+									Haptics.impactAsync(
+										Haptics.ImpactFeedbackStyle.Heavy
+									);
+									setMode("idle");
+								}}
 							>
 								لغو
 							</Button>
@@ -164,5 +194,21 @@ const styles = StyleSheet.create({
 		gap: 10,
 		alignItems: "center",
 		justifyContent: "center",
+	},
+	previewMode: {
+		flex: 1,
+		display: "flex",
+		gap: 10,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	lastRecordBox: {
+		width: "80%",
+		display: "flex",
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-between",
+		borderRadius: 50,
+		padding: 5,
 	},
 });

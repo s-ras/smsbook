@@ -13,14 +13,9 @@ import { db } from "@database/client";
 
 import migrations from "@drizzle/migrations";
 
-import {
-	Vazirmatn_100Thin,
-	Vazirmatn_500Medium,
-	Vazirmatn_900Black,
-} from "@expo-google-fonts/vazirmatn";
-
 SplashScreen.preventAutoHideAsync();
 I18nManager.forceRTL(true);
+I18nManager.allowRTL(true);
 
 const useLoadAssets = () => {
 	const hasHydrated = useStore(state => state._hasHydrated);
@@ -28,9 +23,10 @@ const useLoadAssets = () => {
 	const { success, error } = useMigrations(db, migrations);
 
 	const [fontsLoaded] = useFonts({
-		Vazirmatn_100Thin,
-		Vazirmatn_500Medium,
-		Vazirmatn_900Black,
+		"Vazirmatn-UI-Regular": require("../assets/fonts/Vazirmatn-UI-Regular.ttf"),
+		"Vazirmatn-UI-Medium": require("../assets/fonts/Vazirmatn-UI-Medium.ttf"),
+		"Vazirmatn-UI-ExtraBold": require("../assets/fonts/Vazirmatn-UI-ExtraBold.ttf"),
+		"Vazirmatn-UI-Thin": require("../assets/fonts/Vazirmatn-UI-Thin.ttf"),
 	});
 
 	useEffect(() => {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { StyleSheet, View } from "react-native";
+import { KeyboardAvoidingView, StyleSheet, View } from "react-native";
 
 import {
 	Button,
@@ -12,10 +12,9 @@ import {
 } from "react-native-paper";
 
 import useToastStore from "@state/toastStore";
-
 import useCollections from "@hooks/useCollections";
 
-import ScrollView from "@components/ScrollView";
+import ScrollView from "@components/shared/ScrollView";
 
 interface IProps {
 	isOpen: boolean;
@@ -67,6 +66,8 @@ const NewCollectionDialog: React.FC<IProps> = ({ isOpen, close }) => {
 							mode="outlined"
 							value={name}
 							label="نام مجموعه"
+							autoFocus
+							autoCapitalize="none"
 							onChangeText={text => setName(text)}
 							left={<TextInput.Icon icon="book" />}
 						/>

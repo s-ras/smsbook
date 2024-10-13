@@ -1,6 +1,8 @@
 import { useState } from "react";
+
 import { Menu } from "react-native-paper";
-import ReplaceParameterDialog from "./ReplaceParameterDialog";
+
+import ReplaceParameterDialog from "@components/commands/ReplaceParameterDialog";
 
 interface IProps {
 	cmddId: number;

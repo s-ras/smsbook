@@ -1,15 +1,16 @@
 import { useState } from "react";
 
-import useActiveStore from "@state/activeStore";
-
 import { StyleSheet, View } from "react-native";
 
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 
-import NewParameterFAB from "@components/collections/NewParameterFAB";
-import useParameters from "@hooks/useParameters";
-import ParameterEntry from "@components/collections/ParameterEntry";
 import { Icon, Text } from "react-native-paper";
+
+import useActiveStore from "@state/activeStore";
+import useParameters from "@hooks/useParameters";
+
+import NewParameterFAB from "@components/collections/NewParameterFAB";
+import ParameterEntry from "@components/collections/ParameterEntry";
 
 const Parameters: React.FC = () => {
 	const acid = useActiveStore(state => state.activeCollectionId!);

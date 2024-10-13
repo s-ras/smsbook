@@ -1,9 +1,10 @@
-import useToastStore from "@state/toastStore";
 import { useState } from "react";
 
 import { StyleSheet, View } from "react-native";
 
 import { Icon, Snackbar, useTheme, Text } from "react-native-paper";
+
+import useToastStore from "@state/toastStore";
 
 interface IProps {
 	id: string;

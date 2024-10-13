@@ -1,116 +1,50 @@
-import { Platform } from "react-native";
-
 export const fontConfig = {
 	default: {
-		fontFamily: Platform.select({
-			web: "Vazirmatn_500Medium",
-			ios: "Vazirmatn_500Medium",
-			default: "Vazirmatn_500Medium",
-		}),
+		fontFamily: "Vazirmatn-UI-Regular",
 	},
 	displaySmall: {
-		fontFamily: Platform.select({
-			web: "Vazirmatn_100Thin",
-			ios: "Vazirmatn_100Thin",
-			default: "Vazirmatn_100Thin",
-		}),
+		fontFamily: "Vazirmatn-UI-Thin",
 	},
 	displayMedium: {
-		fontFamily: Platform.select({
-			web: "Vazirmatn_500Medium",
-			ios: "Vazirmatn_500Medium",
-			default: "Vazirmatn_500Medium",
-		}),
+		fontFamily: "Vazirmatn-UI-Medium",
 	},
 	displayLarge: {
-		fontFamily: Platform.select({
-			web: "Vazirmatn_900Black",
-			ios: "Vazirmatn_900Black",
-			default: "Vazirmatn_900Black",
-		}),
+		fontFamily: "Vazirmatn-UI-ExtraBold",
 	},
 	headlineSmall: {
-		fontFamily: Platform.select({
-			web: "Vazirmatn_100Thin",
-			ios: "Vazirmatn_100Thin",
-			default: "Vazirmatn_100Thin",
-		}),
+		fontFamily: "Vazirmatn-UI-Thin",
 	},
 	headlineMedium: {
-		fontFamily: Platform.select({
-			web: "Vazirmatn_500Medium",
-			ios: "Vazirmatn_500Medium",
-			default: "Vazirmatn_500Medium",
-		}),
+		fontFamily: "Vazirmatn-UI-Medium",
 	},
 	headlineLarge: {
-		fontFamily: Platform.select({
-			web: "Vazirmatn_900Black",
-			ios: "Vazirmatn_900Black",
-			default: "Vazirmatn_900Black",
-		}),
+		fontFamily: "Vazirmatn-UI-ExtraBold",
 	},
 	titleSmall: {
-		fontFamily: Platform.select({
-			web: "Vazirmatn_100Thin",
-			ios: "Vazirmatn_100Thin",
-			default: "Vazirmatn_100Thin",
-		}),
+		fontFamily: "Vazirmatn-UI-Thin",
 	},
 	titleMedium: {
-		fontFamily: Platform.select({
-			web: "Vazirmatn_500Medium",
-			ios: "Vazirmatn_500Medium",
-			default: "Vazirmatn_500Medium",
-		}),
+		fontFamily: "Vazirmatn-UI-Medium",
 	},
 	titleLarge: {
-		fontFamily: Platform.select({
-			web: "Vazirmatn_900Black",
-			ios: "Vazirmatn_900Black",
-			default: "Vazirmatn_900Black",
-		}),
+		fontFamily: "Vazirmatn-UI-ExtraBold",
 	},
 	labelSmall: {
-		fontFamily: Platform.select({
-			web: "Vazirmatn_100Thin",
-			ios: "Vazirmatn_100Thin",
-			default: "Vazirmatn_100Thin",
-		}),
+		fontFamily: "Vazirmatn-UI-Thin",
 	},
 	labelMedium: {
-		fontFamily: Platform.select({
-			web: "Vazirmatn_500Medium",
-			ios: "Vazirmatn_500Medium",
-			default: "Vazirmatn_500Medium",
-		}),
+		fontFamily: "Vazirmatn-UI-Medium",
 	},
 	labelLarge: {
-		fontFamily: Platform.select({
-			web: "Vazirmatn_900Black",
-			ios: "Vazirmatn_900Black",
-			default: "Vazirmatn_900Black",
-		}),
+		fontFamily: "Vazirmatn-UI-ExtraBold",
 	},
 	bodySmall: {
-		fontFamily: Platform.select({
-			web: "Vazirmatn_100Thin",
-			ios: "Vazirmatn_100Thin",
-			default: "Vazirmatn_100Thin",
-		}),
+		fontFamily: "Vazirmatn-UI-Thin",
 	},
 	bodyMedium: {
-		fontFamily: Platform.select({
-			web: "Vazirmatn_500Medium",
-			ios: "Vazirmatn_500Medium",
-			default: "Vazirmatn_500Medium",
-		}),
+		fontFamily: "Vazirmatn-UI-Medium",
 	},
 	bodyLarge: {
-		fontFamily: Platform.select({
-			web: "Vazirmatn_900Black",
-			ios: "Vazirmatn_900Black",
-			default: "Vazirmatn_900Black",
-		}),
+		fontFamily: "Vazirmatn-UI-ExtraBold",
 	},
 };

@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { List, useTheme } from "react-native-paper";
 
 import { useImport } from "@hooks/useImportExport";

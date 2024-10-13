@@ -4,11 +4,11 @@ import { useRouter } from "expo-router";
 
 import { Appbar } from "react-native-paper";
 
-import ConfirmationDialog from "@components/shared/ConfirmationDialog";
-
 import useActiveStore from "@state/activeStore";
 import useToastStore from "@state/toastStore";
 import useCommands from "@hooks/useCommands";
+
+import ConfirmationDialog from "@components/shared/ConfirmationDialog";
 
 const DeleteCommandAction: React.FC = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);

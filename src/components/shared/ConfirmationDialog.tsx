@@ -1,8 +1,6 @@
+import { StyleSheet, View } from "react-native";
+
 import { Button, Dialog, Portal, Text, useTheme } from "react-native-paper";
-
-import { StyleSheet } from "react-native";
-
-import { View } from "react-native";
 
 interface IProps {
 	isOpen: boolean;

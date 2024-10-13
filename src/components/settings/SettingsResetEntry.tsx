@@ -2,7 +2,8 @@ import { useState } from "react";
 
 import { List, useTheme } from "react-native-paper";
 
-import { useImport, useReset } from "@hooks/useImportExport";
+import { useReset } from "@hooks/useImportExport";
+
 import ConfirmationDialog from "@components/shared/ConfirmationDialog";
 
 const SettingsResetEntry: React.FC = () => {

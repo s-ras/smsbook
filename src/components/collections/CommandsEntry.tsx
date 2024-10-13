@@ -1,9 +1,12 @@
-import { SelectCommands } from "@schema/commands";
-import useActiveStore from "@state/activeStore";
-import { useRouter } from "expo-router";
 import { StyleSheet } from "react-native";
 
+import { useRouter } from "expo-router";
+
 import { List } from "react-native-paper";
+
+import useActiveStore from "@state/activeStore";
+
+import { SelectCommands } from "@schema/commands";
 
 interface IProps {
 	command: SelectCommands;

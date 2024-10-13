@@ -1,6 +1,8 @@
 import { useState } from "react";
+
 import { Menu } from "react-native-paper";
-import EditStringDialog from "./EditStringDialog";
+
+import EditStringDialog from "@components/commands/EditStringDialog";
 
 interface IProps {
 	cmddId: number;

@@ -1,13 +1,16 @@
+import { useEffect } from "react";
+
 import { Redirect, Tabs, useRouter } from "expo-router";
+import { setBackgroundColorAsync as setNavigationBarColorAsync } from "expo-navigation-bar";
 
 import { Appbar, Icon, useTheme } from "react-native-paper";
 
 import useActiveStore from "@state/activeStore";
 import useCollections from "@hooks/useCollections";
+
+import MaterialTopTabs from "@components/navigation/MaterialTopTabs";
 import DeleteCollectionAction from "@components/collections/DeleteCollectionAction";
 import EditCollectionAction from "@components/collections/EditCollectionAction";
-import { useEffect } from "react";
-import MaterialTopTabs from "@components/navigation/MaterialTopTabs";
 
 const CollectionLayout: React.FC = () => {
 	const router = useRouter();
@@ -20,6 +23,8 @@ const CollectionLayout: React.FC = () => {
 	const collection = useCollections.select(acid);
 
 	const theme = useTheme();
+
+	setNavigationBarColorAsync(theme.colors.background);
 
 	if (!acid) {
 		return <Redirect href="/(tabs)/library" />;
@@ -44,7 +49,10 @@ const CollectionLayout: React.FC = () => {
 						router.navigate("/(tabs)/library");
 					}}
 				/>
-				<Appbar.Content title={collection?.name} />
+				<Appbar.Content
+					title={collection?.name}
+					titleStyle={{ fontSize: 20 }}
+				/>
 				<EditCollectionAction />
 				<DeleteCollectionAction />
 			</Appbar.Header>

@@ -1,11 +1,13 @@
 import { View, StyleSheet } from "react-native";
 
-import ScrollView from "@components/ScrollView";
-import useCommandData from "@hooks/useCommandData";
-import useActiveStore from "@state/activeStore";
-import ParameterEntry from "./ParameterEntry";
-import StringEntry from "./StringEntry";
 import { Icon, Surface, Text } from "react-native-paper";
+
+import useActiveStore from "@state/activeStore";
+import useCommandData from "@hooks/useCommandData";
+
+import ScrollView from "@components/shared/ScrollView";
+import ParameterEntry from "@components/commands/ParameterEntry";
+import StringEntry from "@components/commands/StringEntry";
 
 const CommandData: React.FC = () => {
 	const acid = useActiveStore(state => state.activeCommandId!);
@@ -17,7 +19,7 @@ const CommandData: React.FC = () => {
 			{command_data.length > 0 ? (
 				<Surface
 					style={styles.content}
-					elevation={5}
+					elevation={1}
 					mode="elevated"
 				>
 					<ScrollView>

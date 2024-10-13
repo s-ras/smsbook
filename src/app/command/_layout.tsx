@@ -1,14 +1,16 @@
 import { useEffect } from "react";
 
-import { Redirect, Stack, useRouter } from "expo-router";
+import { Redirect, useRouter } from "expo-router";
 
 import { Appbar } from "react-native-paper";
 
 import useActiveStore from "@state/activeStore";
 import useCommands from "@hooks/useCommands";
+
 import EditCommandAction from "@components/commands/EditCommandAction";
-import Index from ".";
 import DeleteCommandAction from "@components/commands/DeleteCommandAction";
+
+import Index from ".";
 
 const CommandLayout: React.FC = () => {
 	const router = useRouter();
@@ -40,7 +42,10 @@ const CommandLayout: React.FC = () => {
 						router.navigate("/collection");
 					}}
 				/>
-				<Appbar.Content title={command?.name} />
+				<Appbar.Content
+					title={command?.name}
+					titleStyle={{ fontSize: 20 }}
+				/>
 				<EditCommandAction />
 				<DeleteCommandAction />
 			</Appbar.Header>

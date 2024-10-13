@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { List, useTheme } from "react-native-paper";
 
-import SettingsThemeDialog from "./SettingsThemeDialog";
+import SettingsThemeDialog from "@components/settings/SettingsThemeDialog";
 
 const SettingsThemeEntry: React.FC = () => {
 	const theme = useTheme();

@@ -1,8 +1,11 @@
-import ConfirmationDialog from "@components/shared/ConfirmationDialog";
-import useCommandData from "@hooks/useCommandData";
-import useActiveStore from "@state/activeStore";
 import { useState } from "react";
+
 import { Menu } from "react-native-paper";
+
+import useActiveStore from "@state/activeStore";
+import useCommandData from "@hooks/useCommandData";
+
+import ConfirmationDialog from "@components/shared/ConfirmationDialog";
 
 interface IProps {
 	cmddId: number;

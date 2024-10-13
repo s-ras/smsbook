@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Button } from "react-native-paper";
 
-import AddParameterDialog from "./AddParameterDialog";
+import AddParameterDialog from "@components/commands/AddParameterDialog";
 
 const AddParameterButton: React.FC = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);

@@ -1,12 +1,17 @@
 import { useState } from "react";
+
 import { View, StyleSheet } from "react-native";
 
-import useJournal from "@hooks/useJournal";
-import useActiveStore from "@state/activeStore";
-import Animated, { useAnimatedRef } from "react-native-reanimated";
-import { Icon, List, Text } from "react-native-paper";
-import ClearHistoryFAB from "@components/collections/ClearHistoryFab";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+import Animated, { useAnimatedRef } from "react-native-reanimated";
+
+import { Icon, List, Text, useTheme } from "react-native-paper";
+
+import useActiveStore from "@state/activeStore";
+import useJournal from "@hooks/useJournal";
+
+import ClearHistoryFAB from "@components/collections/ClearHistoryFab";
 
 const History: React.FC = () => {
 	const acid = useActiveStore(state => state.activeCollectionId!);
@@ -16,6 +21,8 @@ const History: React.FC = () => {
 	const [isFABExpanded, setIsFABExpanded] = useState<boolean>(true);
 
 	const scrollRef = useAnimatedRef<Animated.ScrollView>();
+
+	const theme = useTheme();
 
 	return (
 		<>
@@ -32,15 +39,26 @@ const History: React.FC = () => {
 						}}
 					>
 						<View style={styles.content}>
-							{journal.map(j => {
+							{journal.map((j, i) => {
 								return (
 									<List.Item
-										style={styles.listItem}
+										style={{
+											...styles.listItem,
+											backgroundColor:
+												i % 2 === 0
+													? theme.colors.surface
+													: theme.colors
+															.surfaceVariant,
+										}}
 										title={j.command_name}
 										description={Intl.DateTimeFormat(
-											"fa-IR"
+											"fa-IR-u-ca-persian",
+											{
+												dateStyle: "long",
+												timeStyle: "short",
+											}
 										).format(j.timestamp)}
-										key={`${j.command_name}${j.timestamp}`}
+										key={j.id}
 										left={props => (
 											<List.Icon
 												{...props}
@@ -90,6 +108,6 @@ const styles = StyleSheet.create({
 		gap: 10,
 	},
 	listItem: {
-		padding: 20,
+		padding: 0,
 	},
 });

@@ -1,17 +1,17 @@
 import { View } from "react-native";
 
 import { Stack } from "expo-router";
-
-import * as NavigationBar from "expo-navigation-bar";
-
-import { PaperProvider } from "react-native-paper";
+import { setBackgroundColorAsync } from "expo-system-ui";
+import { setBackgroundColorAsync as setNavigationBarColorAsync } from "expo-navigation-bar";
 
 import { ThemeProvider } from "@react-navigation/native";
+
+import { PaperProvider } from "react-native-paper";
 
 import useLoadAssets from "@hooks/useLoadAssets";
 import useColorSchemeTheme from "@hooks/useColorSchemeTheme";
 
-import ErrorPage from "@components/ErrorPage";
+import ErrorPage from "@components/shared/ErrorPage";
 import ToastStack from "@components/shared/ToastStack";
 
 const RootLayout = () => {
@@ -19,7 +19,9 @@ const RootLayout = () => {
 
 	const theme = useColorSchemeTheme();
 
-	NavigationBar.setBackgroundColorAsync(theme.colors.background);
+	setBackgroundColorAsync(theme.colors.background);
+
+	setNavigationBarColorAsync(theme.colors.background);
 
 	if (!isReady) {
 		return <ErrorPage />;

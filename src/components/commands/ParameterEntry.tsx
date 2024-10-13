@@ -1,11 +1,14 @@
+import { useState } from "react";
+
 import { StyleSheet, View } from "react-native";
+
+import { List, useTheme, Text, Menu } from "react-native-paper";
+
+import RemoveMenuItem from "@components/commands/RemoveMenuItem";
+import ReplaceParameterMenuItem from "@components/commands/ReplaceParameterMenuItem";
 
 import { SelectCommandData } from "@schema/command_data";
 import { SelectParameters } from "@schema/parameters";
-import { List, useTheme, Text, Menu } from "react-native-paper";
-import { useState } from "react";
-import RemoveMenuItem from "./RemoveMenuItem";
-import ReplaceParameterMenuItem from "./ReplaceParameterMenuItem";
 
 interface IProps {
 	cmd: SelectCommandData;

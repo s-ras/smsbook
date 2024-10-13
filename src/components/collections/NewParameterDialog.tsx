@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { View } from "react-native";
+
 import { StyleSheet } from "react-native";
 
 import {
@@ -11,11 +13,11 @@ import {
 	useTheme,
 } from "react-native-paper";
 
-import ScrollView from "@components/ScrollView";
 import useActiveStore from "@state/activeStore";
-import useParameters from "@hooks/useParameters";
 import useToastStore from "@state/toastStore";
-import { View } from "react-native";
+import useParameters from "@hooks/useParameters";
+
+import ScrollView from "@components/shared/ScrollView";
 
 interface IProps {
 	isOpen: boolean;
@@ -62,8 +64,10 @@ const NewParameterDialog: React.FC<IProps> = ({ isOpen, close }) => {
 						<TextInput
 							mode="outlined"
 							value={name}
+							onChangeText={text => setName(text)}
+							autoFocus
+							autoCapitalize="none"
 							label="نام"
-							onChangeText={text => setName(text.trim())}
 							left={
 								<TextInput.Icon icon="application-variable-outline" />
 							}
@@ -71,8 +75,8 @@ const NewParameterDialog: React.FC<IProps> = ({ isOpen, close }) => {
 						<TextInput
 							mode="outlined"
 							value={value}
+							onChangeText={text => setValue(text)}
 							label="مقدار"
-							onChangeText={text => setValue(text.trim())}
 							left={<TextInput.Icon icon="variable" />}
 						/>
 					</ScrollView>

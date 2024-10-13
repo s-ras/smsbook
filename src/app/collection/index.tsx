@@ -1,15 +1,16 @@
 import { useState } from "react";
 
-import useActiveStore from "@state/activeStore";
-
 import { StyleSheet, View } from "react-native";
 
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 
+import { Icon, Text } from "react-native-paper";
+
+import useActiveStore from "@state/activeStore";
 import useCommands from "@hooks/useCommands";
+
 import NewCommandFAB from "@components/collections/NewCommandFAB";
 import CommandsEntry from "@components/collections/CommandsEntry";
-import { Icon, Text } from "react-native-paper";
 
 const Index: React.FC = () => {
 	const acid = useActiveStore(state => state.activeCollectionId!);

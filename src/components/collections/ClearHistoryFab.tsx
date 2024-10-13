@@ -4,10 +4,11 @@ import { StyleSheet } from "react-native";
 
 import { AnimatedFAB } from "react-native-paper";
 
-import ConfirmationDialog from "@components/shared/ConfirmationDialog";
+import useActiveStore from "@state/activeStore";
 import useToastStore from "@state/toastStore";
 import useJournal from "@hooks/useJournal";
-import useActiveStore from "@state/activeStore";
+
+import ConfirmationDialog from "@components/shared/ConfirmationDialog";
 
 interface IProps {
 	isExtended: boolean;
@@ -25,7 +26,6 @@ const ClearHistoryFAB: React.FC<IProps> = ({ isExtended }) => {
 	const onConfirm = () => {
 		purge();
 		add("تاریخچه با موفقیت پاک شد");
-		close();
 	};
 
 	return (

@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Button } from "react-native-paper";
 
-import AddStringDialog from "./AddStringDialog";
+import AddStringDialog from "@components/commands/AddStringDialog";
 
 const AddStringButton: React.FC = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);

@@ -11,8 +11,9 @@ import {
 	useTheme,
 } from "react-native-paper";
 
-import ScrollView from "@components/ScrollView";
 import useCommandData from "@hooks/useCommandData";
+
+import ScrollView from "@components/shared/ScrollView";
 
 interface IProps {
 	isOpen: boolean;
@@ -59,6 +60,8 @@ const EditStringDialog: React.FC<IProps> = ({ isOpen, close, cmddId }) => {
 							mode="outlined"
 							value={value}
 							label="مقدار"
+							autoFocus
+							autoCapitalize="none"
 							onChangeText={text => setValue(text)}
 							left={<TextInput.Icon icon="format-text" />}
 						/>

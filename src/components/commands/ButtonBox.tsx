@@ -1,7 +1,9 @@
 import { StyleSheet, View } from "react-native";
-import AddParameterButton from "./AddParameterButton";
-import AddStringButton from "./AddStringButton";
+
 import { Surface } from "react-native-paper";
+
+import AddParameterButton from "@components/commands/AddParameterButton";
+import AddStringButton from "@components/commands/AddStringButton";
 
 const ButtonBox: React.FC = () => {
 	return (

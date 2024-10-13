@@ -1,7 +1,10 @@
-import useCommands from "@hooks/useCommands";
 import { FlatList, StyleSheet, View } from "react-native";
+
 import { Icon, Text, useTheme } from "react-native-paper";
-import Command from "./Command";
+
+import useCommands from "@hooks/useCommands";
+
+import Command from "@components/mainpage/Command";
 
 interface IProps {
 	cid: number;

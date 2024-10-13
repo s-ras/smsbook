@@ -20,12 +20,13 @@ const useGetCommandData = (id: number) => {
 };
 
 const useGetCommandString = (id: number) => {
-	const data = db
-		.select()
-		.from(command_data)
-		.leftJoin(parameters, eq(command_data.param_id, parameters.id))
-		.where(eq(command_data.command_id, id))
-		.all();
+	const data = useLiveQuery(
+		db
+			.select()
+			.from(command_data)
+			.leftJoin(parameters, eq(command_data.param_id, parameters.id))
+			.where(eq(command_data.command_id, id))
+	).data;
 
 	let res = "";
 

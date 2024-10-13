@@ -1,8 +1,8 @@
 import { FlatList, StyleSheet, View } from "react-native";
 
-import useCollections from "@hooks/useCollections";
-
 import { Icon, Text } from "react-native-paper";
+
+import useCollections from "@hooks/useCollections";
 
 import Collection from "@components/mainpage/Collection";
 

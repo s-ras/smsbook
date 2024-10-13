@@ -1,4 +1,4 @@
-import { asc, eq } from "drizzle-orm";
+import { asc, desc, eq, inArray } from "drizzle-orm";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 
 import { db } from "@database/client";
@@ -13,6 +13,7 @@ const useGetJournal = (id: number) => {
 			.select({
 				timestamp: journal.timestamp,
 				command_name: commands.name,
+				id: journal.id,
 			})
 			.from(journal)
 			.innerJoin(commands, eq(journal.command_id, commands.id))
@@ -32,28 +33,48 @@ const useInsertJournal = (command_id: number) => {
 
 const usePurgeJournal = (id: number) => {
 	return () => {
-		const joined = db
-			.$with("joined")
-			.as(
-				db
-					.select()
-					.from(journal)
-					.innerJoin(commands, eq(journal.command_id, commands.id))
-					.innerJoin(
-						collections,
-						eq(commands.collection_id, collections.id)
-					)
-					.where(eq(collections.id, id))
-			);
+		const deletingRows = db
+			.select({
+				id: journal.id,
+			})
+			.from(journal)
+			.innerJoin(commands, eq(journal.command_id, commands.id))
+			.innerJoin(collections, eq(commands.collection_id, collections.id))
+			.where(eq(collections.id, id))
+			.all();
 
-		db.with(joined).delete(journal).where(eq(collections.id, id)).run();
+		db.delete(journal)
+			.where(
+				inArray(
+					journal.id,
+					deletingRows.map(row => row.id)
+				)
+			)
+			.run();
 	};
+};
+
+const useGetLastJournalRecord = (id: number) => {
+	const last = useLiveQuery(
+		db
+			.select()
+			.from(journal)
+			.where(eq(journal.command_id, id))
+			.orderBy(desc(journal.timestamp))
+	).data;
+
+	if (!last || last.length === 0) {
+		return undefined;
+	} else {
+		return last[0];
+	}
 };
 
 const useJournal = {
 	get: useGetJournal,
 	insert: useInsertJournal,
 	purge: usePurgeJournal,
+	last: useGetLastJournalRecord,
 };
 
 export default useJournal;

@@ -11,10 +11,11 @@ import {
 	useTheme,
 } from "react-native-paper";
 
-import ScrollView from "@components/ScrollView";
 import useActiveStore from "@state/activeStore";
 import useToastStore from "@state/toastStore";
 import useCommands from "@hooks/useCommands";
+
+import ScrollView from "@components/shared/ScrollView";
 
 interface IProps {
 	isOpen: boolean;
@@ -59,6 +60,8 @@ const NewCommandDialog: React.FC<IProps> = ({ isOpen, close }) => {
 							mode="outlined"
 							value={name}
 							label="نام"
+							autoFocus
+							autoCapitalize="none"
 							onChangeText={text => setName(text)}
 							left={
 								<TextInput.Icon icon="application-variable-outline" />

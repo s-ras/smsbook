@@ -1,8 +1,9 @@
+import ScrollView from "@components/shared/ScrollView";
 import SettingsThemeEntry from "@components/settings/SettingsThemeEntry";
-import ScrollView from "@components/ScrollView";
 import SettingsExportEntry from "@components/settings/SettingsExportEntry";
 import SettingsImportEntry from "@components/settings/SettingsImportEntry";
 import SettingsResetEntry from "@components/settings/SettingsResetEntry";
+import SettingsVersionEntry from "@components/settings/SettingsVersionEntry";
 
 const Settings = () => {
 	return (
@@ -11,6 +12,7 @@ const Settings = () => {
 			<SettingsExportEntry />
 			<SettingsImportEntry />
 			<SettingsResetEntry />
+			<SettingsVersionEntry />
 		</ScrollView>
 	);
 };
