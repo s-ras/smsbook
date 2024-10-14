@@ -85,13 +85,19 @@ const useUpdateCommandData = (id: number) => {
 	};
 };
 
-const useReorderByOrder = () => {
+const useReorderCommandData = (id: number) => {
 	return (from: number, to: number) => {
+		console.log(`${from} -> ${to}`);
 		db.transaction(async tx => {
 			const current = tx
 				.select()
 				.from(command_data)
-				.where(eq(command_data.order, from))
+				.where(
+					and(
+						eq(command_data.command_id, id),
+						eq(command_data.order, from)
+					)
+				)
 				.get();
 
 			if (!current) {
@@ -104,7 +110,8 @@ const useReorderByOrder = () => {
 					.where(
 						and(
 							gt(command_data.order, current.order),
-							lt(command_data.order, to + 1)
+							lt(command_data.order, to + 1),
+							eq(command_data.command_id, id)
 						)
 					)
 					.run();
@@ -114,7 +121,8 @@ const useReorderByOrder = () => {
 					.where(
 						and(
 							lt(command_data.order, current.order),
-							gt(command_data.order, to - 1)
+							gt(command_data.order, to - 1),
+							eq(command_data.command_id, id)
 						)
 					)
 					.run();
@@ -128,8 +136,8 @@ const useReorderByOrder = () => {
 	};
 };
 
-const useReorderCommandData = () => {
-	return (id: number, order: number) => {
+const useDeleteCommandData = (cmd_id: number) => {
+	return (id: number) => {
 		db.transaction(async tx => {
 			const current = tx
 				.select()
@@ -141,42 +149,20 @@ const useReorderCommandData = () => {
 				throw new Error();
 			}
 
-			if (current.order < order) {
-				tx.update(command_data)
-					.set({ order: sql`${command_data.order} - 1` })
-					.where(
-						and(
-							gt(command_data.order, current.order),
-							lt(command_data.order, order + 1)
-						)
-					)
-					.run();
-			} else if (current.order > order) {
-				tx.update(command_data)
-					.set({ order: sql`${command_data.order} + 1` })
-					.where(
-						and(
-							lt(command_data.order, current.order),
-							gt(command_data.order, order - 1)
-						)
-					)
-					.run();
-			}
-
 			tx.update(command_data)
-				.set({ order })
-				.where(eq(command_data.id, id))
+				.set({ order: sql`${command_data.order} - 1` })
+				.where(
+					and(
+						eq(command_data.command_id, cmd_id),
+						gt(command_data.order, current.order)
+					)
+				)
+				.run();
+
+			tx.delete(command_data)
+				.where(eq(command_data.id, current.id))
 				.run();
 		});
-	};
-};
-
-const useDeleteCommandData = (cmd_id: number) => {
-	const ecd = useGetCommandData(cmd_id);
-	const reorder = useReorderCommandData();
-	return (id: number) => {
-		reorder(id, ecd.length + 1);
-		db.delete(command_data).where(eq(command_data.id, id)).run();
 	};
 };
 
@@ -187,7 +173,6 @@ const useCommandData = {
 	insert: useInsertCommandData,
 	update: useUpdateCommandData,
 	reorder: useReorderCommandData,
-	reorderByOrder: useReorderByOrder,
 	delete: useDeleteCommandData,
 };
 

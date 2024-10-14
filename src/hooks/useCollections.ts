@@ -1,11 +1,11 @@
 import { db } from "@database/client";
 import { collections, InsertCollection } from "@schema/collections";
-import { and, desc, eq, gt, lt, sql } from "drizzle-orm";
+import { and, asc, eq, gt, lt, sql } from "drizzle-orm";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 
 const useGetCollections = () => {
 	return useLiveQuery(
-		db.select().from(collections).orderBy(desc(collections.order))
+		db.select().from(collections).orderBy(asc(collections.order))
 	).data;
 };
 
@@ -51,16 +51,7 @@ const useExpandCollection = (id: number) => {
 	};
 };
 
-const useExpandWithOrder = () => {
-	return (order: number, isExpanded: boolean) => {
-		db.update(collections)
-			.set({ is_expanded: isExpanded })
-			.where(eq(collections.order, order))
-			.run();
-	};
-};
-
-const useReorderByOrder = () => {
+const useReorderCollections = () => {
 	return (from: number, to: number) => {
 		db.transaction(async tx => {
 			const current = tx
@@ -103,8 +94,8 @@ const useReorderByOrder = () => {
 	};
 };
 
-const useReorderCollections = () => {
-	return (id: number, order: number) => {
+const useDeleteCollections = () => {
+	return (id: number) => {
 		db.transaction(async tx => {
 			const current = tx
 				.select()
@@ -116,41 +107,13 @@ const useReorderCollections = () => {
 				throw new Error();
 			}
 
-			if (current.order < order) {
-				tx.update(collections)
-					.set({ order: sql`${collections.order} - 1` })
-					.where(
-						and(
-							gt(collections.order, current.order),
-							lt(collections.order, order + 1)
-						)
-					)
-					.run();
-			} else if (current.order > order) {
-				tx.update(collections)
-					.set({ order: sql`${collections.order} + 1` })
-					.where(
-						and(
-							lt(collections.order, current.order),
-							gt(collections.order, order - 1)
-						)
-					)
-					.run();
-			}
-
 			tx.update(collections)
-				.set({ order })
-				.where(eq(collections.id, id))
+				.set({ order: sql`${collections.order} - 1` })
+				.where(gt(collections.order, current.order))
 				.run();
-		});
-	};
-};
 
-const useDeleteCollections = () => {
-	const ec = useGetCollections();
-	const reorder = useReorderCollections();
-	return (id: number) => {
-		reorder(id, ec.length + 1);
+			tx.delete(collections).where(eq(collections.id, current.id)).run();
+		});
 		db.delete(collections).where(eq(collections.id, id)).run();
 	};
 };
@@ -161,9 +124,7 @@ const useCollections = {
 	insert: useInsertCollections,
 	update: useUpdateCollections,
 	expand: useExpandCollection,
-	expandWithOrder: useExpandWithOrder,
 	reorder: useReorderCollections,
-	reorderByOrder: useReorderByOrder,
 	delete: useDeleteCollections,
 };
 

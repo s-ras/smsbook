@@ -20,7 +20,7 @@ const CommandData: React.FC = () => {
 	const acid = useActiveStore(state => state.activeCommandId!);
 
 	const command_data = useCommandData.get(acid);
-	const reorder = useCommandData.reorderByOrder();
+	const reorder = useCommandData.reorder(acid);
 
 	return (
 		<View style={styles.main}>

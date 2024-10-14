@@ -14,7 +14,7 @@ import Collection from "@components/mainpage/Collection";
 
 const Index = () => {
 	const collections = useCollections.get();
-	const reorder = useCollections.reorderByOrder();
+	const reorder = useCollections.reorder();
 
 	return (
 		<View style={styles.main}>
