@@ -1,6 +1,12 @@
-import { FlatList, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { Icon, Text } from "react-native-paper";
+
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+
+import DraggableFlatList, {
+	ScaleDecorator,
+} from "react-native-draggable-flatlist";
 
 import useCollections from "@hooks/useCollections";
 
@@ -8,16 +14,29 @@ import Collection from "@components/mainpage/Collection";
 
 const Index = () => {
 	const collections = useCollections.get();
+	const reorder = useCollections.reorderByOrder();
 
 	return (
 		<View style={styles.main}>
 			{collections.length > 0 ? (
-				<FlatList
-					style={styles.content}
-					data={collections}
-					renderItem={({ item }) => <Collection c={item} />}
-					keyExtractor={c => c.id.toString()}
-				/>
+				<GestureHandlerRootView style={{ flex: 1 }}>
+					<DraggableFlatList
+						data={collections}
+						renderItem={({ item, drag, isActive }) => (
+							<ScaleDecorator>
+								<Collection
+									c={item}
+									drag={drag}
+									isDragging={isActive}
+								/>
+							</ScaleDecorator>
+						)}
+						onDragEnd={({ from, to }) => {
+							reorder(from + 1, to + 1);
+						}}
+						keyExtractor={c => c.id.toString()}
+					/>
+				</GestureHandlerRootView>
 			) : (
 				<View style={styles.noContent}>
 					<Icon

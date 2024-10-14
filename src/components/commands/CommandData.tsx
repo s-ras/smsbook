@@ -1,11 +1,18 @@
 import { View, StyleSheet } from "react-native";
 
+import * as Haptics from "expo-haptics";
+
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+
+import DraggableFlatList, {
+	ScaleDecorator,
+} from "react-native-draggable-flatlist";
+
 import { Icon, Surface, Text } from "react-native-paper";
 
 import useActiveStore from "@state/activeStore";
 import useCommandData from "@hooks/useCommandData";
 
-import ScrollView from "@components/shared/ScrollView";
 import ParameterEntry from "@components/commands/ParameterEntry";
 import StringEntry from "@components/commands/StringEntry";
 
@@ -13,6 +20,7 @@ const CommandData: React.FC = () => {
 	const acid = useActiveStore(state => state.activeCommandId!);
 
 	const command_data = useCommandData.get(acid);
+	const reorder = useCommandData.reorderByOrder();
 
 	return (
 		<View style={styles.main}>
@@ -22,26 +30,46 @@ const CommandData: React.FC = () => {
 					elevation={1}
 					mode="elevated"
 				>
-					<ScrollView>
-						{command_data.map(d => {
-							if (d.parameters) {
-								return (
-									<ParameterEntry
-										key={d.command_data.id}
-										cmd={d.command_data}
-										param={d.parameters}
-									/>
-								);
-							} else {
-								return (
-									<StringEntry
-										key={d.command_data.id}
-										cmd={d.command_data}
-									/>
-								);
+					<GestureHandlerRootView style={{ flex: 1 }}>
+						<DraggableFlatList
+							data={command_data}
+							keyExtractor={item =>
+								item.command_data.id.toString()
 							}
-						})}
-					</ScrollView>
+							onDragEnd={({ from, to }) => {
+								reorder(from + 1, to + 1);
+							}}
+							onDragBegin={() => {
+								Haptics.impactAsync(
+									Haptics.ImpactFeedbackStyle.Heavy
+								);
+							}}
+							renderItem={({ item, drag, isActive }) => {
+								if (item.parameters) {
+									return (
+										<ScaleDecorator>
+											<ParameterEntry
+												key={item.command_data.id}
+												cmd={item.command_data}
+												param={item.parameters}
+												drag={drag}
+											/>
+										</ScaleDecorator>
+									);
+								} else {
+									return (
+										<ScaleDecorator>
+											<StringEntry
+												key={item.command_data.id}
+												cmd={item.command_data}
+												drag={drag}
+											/>
+										</ScaleDecorator>
+									);
+								}
+							}}
+						/>
+					</GestureHandlerRootView>
 				</Surface>
 			) : (
 				<View style={styles.noContent}>

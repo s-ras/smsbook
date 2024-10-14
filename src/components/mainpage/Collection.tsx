@@ -7,12 +7,15 @@ import CollectionHeader from "@components/mainpage/CollectionHeader";
 import CommandsGrid from "@components/mainpage/CommandsGrid";
 
 import { SelectCollection } from "@schema/collections";
+import { useEffect } from "react";
 
 interface IProps {
 	c: SelectCollection;
+	drag: () => void;
+	isDragging: boolean;
 }
 
-const Collection: React.FC<IProps> = ({ c }) => {
+const Collection: React.FC<IProps> = ({ c, drag, isDragging }) => {
 	const expand = useCollections.expand(c.id);
 
 	return (
@@ -22,6 +25,8 @@ const Collection: React.FC<IProps> = ({ c }) => {
 					<CollectionHeader
 						name={c.name}
 						isExpanded={c.is_expanded}
+						onLongPress={drag}
+						onPress={() => expand(!c.is_expanded)}
 					/>
 				}
 				isExpanded={c.is_expanded}

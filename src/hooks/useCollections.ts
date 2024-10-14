@@ -51,6 +51,58 @@ const useExpandCollection = (id: number) => {
 	};
 };
 
+const useExpandWithOrder = () => {
+	return (order: number, isExpanded: boolean) => {
+		db.update(collections)
+			.set({ is_expanded: isExpanded })
+			.where(eq(collections.order, order))
+			.run();
+	};
+};
+
+const useReorderByOrder = () => {
+	return (from: number, to: number) => {
+		db.transaction(async tx => {
+			const current = tx
+				.select()
+				.from(collections)
+				.where(eq(collections.order, from))
+				.get();
+
+			if (!current) {
+				throw new Error();
+			}
+
+			if (current.order < to) {
+				tx.update(collections)
+					.set({ order: sql`${collections.order} - 1` })
+					.where(
+						and(
+							gt(collections.order, current.order),
+							lt(collections.order, to + 1)
+						)
+					)
+					.run();
+			} else if (current.order > to) {
+				tx.update(collections)
+					.set({ order: sql`${collections.order} + 1` })
+					.where(
+						and(
+							lt(collections.order, current.order),
+							gt(collections.order, to - 1)
+						)
+					)
+					.run();
+			}
+
+			tx.update(collections)
+				.set({ order: to })
+				.where(eq(collections.id, current.id))
+				.run();
+		});
+	};
+};
+
 const useReorderCollections = () => {
 	return (id: number, order: number) => {
 		db.transaction(async tx => {
@@ -109,7 +161,9 @@ const useCollections = {
 	insert: useInsertCollections,
 	update: useUpdateCollections,
 	expand: useExpandCollection,
+	expandWithOrder: useExpandWithOrder,
 	reorder: useReorderCollections,
+	reorderByOrder: useReorderByOrder,
 	delete: useDeleteCollections,
 };
 

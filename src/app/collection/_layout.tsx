@@ -34,6 +34,7 @@ const CollectionLayout: React.FC = () => {
 	useEffect(() => {
 		return () => {
 			reset();
+			setNavigationBarColorAsync(theme.colors.elevation.level2);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -64,7 +65,7 @@ const CollectionLayout: React.FC = () => {
 						flexDirection: "row",
 					},
 					tabBarLabelStyle: {
-						fontFamily: "Vazirmatn_500Medium",
+						fontFamily: "Vazirmatn-UI-Medium",
 					},
 					tabBarStyle: {
 						backgroundColor: theme.colors.elevation.level2,

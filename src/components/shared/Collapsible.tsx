@@ -33,14 +33,7 @@ const Collapsible: React.FC<IProps> = ({
 
 	return (
 		<View>
-			<Pressable
-				style={styles.heading}
-				onPress={() => {
-					expand(!isExpanded);
-				}}
-			>
-				{summary}
-			</Pressable>
+			<View style={styles.heading}>{summary}</View>
 			<Animated.View style={[styles.animatedView, bodyStyle]}>
 				<View
 					onLayout={e => {

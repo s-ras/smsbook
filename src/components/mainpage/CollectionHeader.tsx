@@ -13,9 +13,16 @@ import { useTheme, Text, TouchableRipple, Icon } from "react-native-paper";
 interface IProps {
 	name: string;
 	isExpanded: boolean;
+	onLongPress: () => void;
+	onPress: () => void;
 }
 
-const CollectionHeader: React.FC<IProps> = ({ name, isExpanded }) => {
+const CollectionHeader: React.FC<IProps> = ({
+	name,
+	isExpanded,
+	onLongPress,
+	onPress,
+}) => {
 	const theme = useTheme();
 
 	const rotation = useSharedValue<number>(isExpanded ? 180 : 0);
@@ -48,6 +55,8 @@ const CollectionHeader: React.FC<IProps> = ({ name, isExpanded }) => {
 			>
 				<TouchableRipple
 					style={styles.rippleWrapper}
+					onLongPress={onLongPress}
+					onPress={onPress}
 					borderless
 				>
 					<View style={styles.inner}>

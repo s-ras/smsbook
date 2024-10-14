@@ -85,6 +85,49 @@ const useUpdateCommandData = (id: number) => {
 	};
 };
 
+const useReorderByOrder = () => {
+	return (from: number, to: number) => {
+		db.transaction(async tx => {
+			const current = tx
+				.select()
+				.from(command_data)
+				.where(eq(command_data.order, from))
+				.get();
+
+			if (!current) {
+				throw new Error();
+			}
+
+			if (current.order < to) {
+				tx.update(command_data)
+					.set({ order: sql`${command_data.order} - 1` })
+					.where(
+						and(
+							gt(command_data.order, current.order),
+							lt(command_data.order, to + 1)
+						)
+					)
+					.run();
+			} else if (current.order > to) {
+				tx.update(command_data)
+					.set({ order: sql`${command_data.order} + 1` })
+					.where(
+						and(
+							lt(command_data.order, current.order),
+							gt(command_data.order, to - 1)
+						)
+					)
+					.run();
+			}
+
+			tx.update(command_data)
+				.set({ order: to })
+				.where(eq(command_data.id, current.id))
+				.run();
+		});
+	};
+};
+
 const useReorderCommandData = () => {
 	return (id: number, order: number) => {
 		db.transaction(async tx => {
@@ -144,6 +187,7 @@ const useCommandData = {
 	insert: useInsertCommandData,
 	update: useUpdateCommandData,
 	reorder: useReorderCommandData,
+	reorderByOrder: useReorderByOrder,
 	delete: useDeleteCommandData,
 };
 

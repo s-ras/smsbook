@@ -13,9 +13,10 @@ import { SelectParameters } from "@schema/parameters";
 interface IProps {
 	cmd: SelectCommandData;
 	param: SelectParameters;
+	drag: () => void;
 }
 
-const ParameterEntry: React.FC<IProps> = ({ cmd, param }) => {
+const ParameterEntry: React.FC<IProps> = ({ cmd, param, drag }) => {
 	const theme = useTheme();
 
 	const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -49,6 +50,7 @@ const ParameterEntry: React.FC<IProps> = ({ cmd, param }) => {
 						</View>
 					)}
 					onPress={() => setIsOpen(true)}
+					onLongPress={drag}
 				/>
 			}
 		>
